@@ -1,1 +1,8 @@
-streamlit>=1.26.0
+streamlit
+streamlit-drawable-canvas
+Pillow
+pandas
+torch
+opencv-python
+numpy
+ultralytics
