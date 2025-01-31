@@ -3,6 +3,6 @@ streamlit-drawable-canvas
 Pillow
 pandas
 torch
-opencv-python
+opencv-python-headless
 numpy
 ultralytics
