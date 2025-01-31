@@ -3,10 +3,14 @@ from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 import pandas as pd
 import torch
+import os
 import cv2
 import numpy as np
 from ultralytics import YOLO
 import io
+
+# Fix OpenCV import issue
+os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"
 
 # Load YOLOv8 Model
 yolo_model = YOLO("yolov8n.pt")
@@ -32,7 +36,7 @@ if uploaded_file:
     for result in results:
         for box in result.boxes:
             x1, y1, x2, y2 = map(int, box.xyxy[0])
-            annotations.append({"x": x1, "y": y1, "width": x2 - x1, "height": y2 - y1})
+            annotations.append({"x": x1, "y": y1, "width": x2 - x1, "height": y2 - y1, "label": box.cls.item()})
     
     # Convert to DataFrame
     df = pd.DataFrame(annotations)
@@ -41,6 +45,8 @@ if uploaded_file:
     # Overlay Bounding Boxes on Image
     for ann in annotations:
         cv2.rectangle(image_cv, (ann["x"], ann["y"]), (ann["x"] + ann["width"], ann["y"] + ann["height"]), (0, 255, 0), 2)
+        label = f"{ann['label']}"
+        cv2.putText(image_cv, label, (ann["x"], ann["y"] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
     
     # Display Annotated Image
     st.image(cv2.cvtColor(image_cv, cv2.COLOR_BGR2RGB), caption="Auto-Annotated Image", use_column_width=True)
