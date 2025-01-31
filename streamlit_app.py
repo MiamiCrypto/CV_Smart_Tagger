@@ -36,7 +36,8 @@ if uploaded_file:
     for result in results:
         for box in result.boxes:
             x1, y1, x2, y2 = map(int, box.xyxy[0])
-            annotations.append({"x": x1, "y": y1, "width": x2 - x1, "height": y2 - y1, "label": box.cls.item()})
+            label = yolo_model.names[int(box.cls.item())]  # Convert class index to label
+            annotations.append({"x": x1, "y": y1, "width": x2 - x1, "height": y2 - y1, "label": label})
     
     # Convert to DataFrame
     df = pd.DataFrame(annotations)
