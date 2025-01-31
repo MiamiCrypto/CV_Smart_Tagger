@@ -22,7 +22,7 @@ st.title("Smart Tagger: AI-Powered Image Annotation Tool")
 uploaded_file = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
 if uploaded_file:
     image = Image.open(uploaded_file)
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+    st.image(image, caption="Uploaded Image", use_container_width=True)
     
     # Convert Image to OpenCV Format
     image_cv = np.array(image.convert("RGB"))
@@ -49,7 +49,7 @@ if uploaded_file:
         cv2.putText(image_cv, label, (ann["x"], ann["y"] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
     
     # Display Annotated Image
-    st.image(cv2.cvtColor(image_cv, cv2.COLOR_BGR2RGB), caption="Auto-Annotated Image", use_column_width=True)
+    st.image(cv2.cvtColor(image_cv, cv2.COLOR_BGR2RGB), caption="Auto-Annotated Image", use_container_width=True)
     
     # Download Option
     csv = df.to_csv(index=False)
